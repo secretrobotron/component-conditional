@@ -1,0 +1,82 @@
+<polymer-element name="ceci-conditional" extends="ceci-element" attributes="expect">
+  <ceci-definition>
+    {
+      "name": "Conditional",
+      "thumbnail": "./thumbnail.png",
+      "description": "Broadcasts depending on whether or not input is equal to expected value.",
+      "broadcasts": {
+        "yes": {
+          "label": "Yes",
+          "description": "Input value equals expected value."
+        },
+        "almost": {
+          "label": "Current Count",
+          "description": "Input value roughly equals expected value."
+        },
+        "no": {
+          "label": "Current Count",
+          "description": "Input value does not equal expected value."
+        }
+      },
+      "listeners": {
+        "test": {
+          "description": "Test a value.",
+          "label": "Test",
+          "default": "blue"
+        }
+      },
+      "attributes": {
+        "expect": {
+          "description": "Value to evaluate input against.",
+          "label": "Expected Value",
+          "editable": "text",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        width: 100%;
+        display: block;
+      }
+
+      :host #input-container {
+        margin-top: .3em;
+        margin-bottom: .3em;
+        margin-left: 1em;
+        margin-right: 1.5em;
+      }
+
+      :host #input-container input {
+        width: 100%;
+      }
+    </style>
+    <shadow></shadow>
+    <div id="input-container"><input type="text" value="{{expect}}" placeholder="Expected value"></div>
+  </template>
+  <script>
+    Polymer("ceci-conditional", {
+      expect: 'true',
+      ready: function() {
+        this.super();
+      },
+      test: function (value) {
+        var expect = this.expect;
+
+        if (value === expect) {
+          this.broadcast('yes');
+        }
+        else {
+          if (value.toString().trim().toLowerCase() === expect.toString().trim().toLowerCase()) {
+            this.broadcast('almost', score);
+          }
+          else {
+            this.broadcast('no');
+          }
+        }
+      }
+    });
+  </script>
+</polymer-element>
